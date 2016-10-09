@@ -32,6 +32,7 @@ class Application
             if (!$response) {
                 throw new \Exception('wrong request');
             }
+            echo $response;
         } catch (\Exception $e) {
             echo $e->getMessage();
         }

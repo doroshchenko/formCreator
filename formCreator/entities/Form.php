@@ -31,18 +31,10 @@ class Form extends Entity
         return $this->name;
     }
 
-    public function setAction($action)
-    {
-        $this->action = $action;
-        return $this;
-    }
-
     public function setElements(array $elements)
     {
         foreach ($elements as $element) {
-            if (($element instanceof FormElement)) {
-                $this->elements[] = $element;
-            }
+            $this->elements[] = new FormElement();
         }
         return $this;
     }
@@ -54,7 +46,19 @@ class Form extends Entity
 
     public function getAll()
     {
-        return $this->storage->getAll();
+        $data = $this->storage->getAll();
+        $forms = array();
+        foreach ($data as $row) {
+            $form = new self();
+            $form->setName($row['name'])
+                ->setAction($row['action'])
+                ->setMethod($row['method'])
+                ->setType($row['type'])
+                ->setElements($row['elements']);
+            $forms[] = $form;
+        }
+
+        return $forms;
     }
 
     public function setStorage($storage)
@@ -66,6 +70,45 @@ class Form extends Entity
     public function save()
     {
         $this->storage->save($this);
+    }
+
+    public function setMethod($method)
+    {
+        $this->method = $method;
+
+        return $this;
+    }
+
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+   /* public function setAction($action)
+    {
+        $this->action = $action;
+
+        return $this;
+    }*/
+
+    public function __call($name, $value)
+    {
+        $method = substr($name, 0, 3);
+        if ($method == 'set') {
+            $prop = strtolower(substr($name, 3));
+            if (property_exists($this, $prop)) {
+                $this->{$prop} = $value;
+            }
+        } else if ($method == 'get') {
+            $prop = strtolower(substr($name, 3));
+            if (property_exists($this, $prop)) {
+                return $this->{$prop};
+            }
+        }
+
+        return $this;
     }
 }
 

@@ -4,6 +4,7 @@ namespace formCreator\controllers;
 
 use formCreator\entities\Form;
 use formCreator\entities\FormElement;
+use formCreator\app\View;
 
 class FormController extends Controller
 {
@@ -12,7 +13,9 @@ class FormController extends Controller
         $form = new Form();
         $form->setStorage($this->getStorage());
         $forms = $form->getAll();
-        return $forms;
+        $data['forms'] = $forms;
+
+        return View::create('forms', $data);
 
     }
 

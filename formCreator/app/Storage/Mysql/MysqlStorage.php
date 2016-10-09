@@ -18,7 +18,13 @@ class MysqlStorage extends AbstractStorage
     public function getAll()
     {
         $res = $this->db->query("SELECT * FROM `form`");
-        return $res->fetch();
+        $forms = $res->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($forms as &$form) {
+            $form['elements'] = $this->db->query('SELECT * FROM `form_element` WHERE id_form ='.$form['id_form'])
+                ->fetchAll(\PDO::FETCH_ASSOC);
+        }
+
+        return ($forms) ? $forms : array();
     }
 
     public function getEntityByID($id)
