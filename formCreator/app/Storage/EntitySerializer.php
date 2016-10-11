@@ -18,7 +18,18 @@ class EntitySerializer
         $props = $reflection->getProperties();
         foreach ($props as $prop)
         {
-            $data[$prop->name] = $object->{'get'.ucfirst($prop->name)}();
+            if ($prop->name != 'storage') {
+                $data[$prop->name] = $object->{'get'.ucfirst($prop->name)}();
+                if (gettype($data[$prop->name]) == 'object') {
+                    self::serialize($data[$prop->name]);
+                } elseif (gettype($data[$prop->name]) == 'array') {
+                    foreach ($data[$prop->name] as $index => $value) {
+                        if (gettype($value) == 'object') {
+                            $data[$prop->name][$index] = self::serialize($value);
+                        }
+                    }
+                }
+            }
         }
 
         return $data;

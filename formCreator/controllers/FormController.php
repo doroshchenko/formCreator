@@ -28,6 +28,7 @@ class FormController extends Controller
         // -- test data -- //
         $formName = '111';
         $formMethod = '222';
+        $type = 555;
         $formElements = array(
             array(
                 'name' => '111',
@@ -41,6 +42,7 @@ class FormController extends Controller
             $form->setStorage($this->getStorage())
                 ->setName($formName)
                 ->setMethod($formMethod)
+                ->setType($type)
                 ->setElements($formElements)
                 ->save();
             $res = $form->getAll();

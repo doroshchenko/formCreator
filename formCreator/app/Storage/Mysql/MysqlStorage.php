@@ -34,10 +34,27 @@ class MysqlStorage extends AbstractStorage
 
     public function save($data)
     {
-        if (!$this->formExists($data['name'])) {
-            $this->db->query('INSERT INTO');
+        if (!$this->entityExists($data['name'])) {
+            $this->db->beginTransaction();
+            $stmt = $this->db->prepare('INSERT INTO `form` VALUES (null,?,?,?,?)');
+            $res = $stmt->execute(array($data['name'],
+                                        $data['action'],
+                                        $data['type'],
+                                        $data['method']));
+            if ($res) {
+                $formId = $this->db->lastInsertId();
+                foreach ($data['elements'] as $element) {
+                    $stmt = $this->db->prepare('INSERT INTO `form_element` VALUES(null,?,?,?,?)');
+                    $res = $stmt->execute(array($formId,
+                                                $element['name'],
+                                                $element['type'],
+                                                $element['value']));
+
+                }
+                $this->db->commit();
+            }
         } else {
-            $this->db->query();
+            //$this->db->query();
         }
     }
 
@@ -46,14 +63,13 @@ class MysqlStorage extends AbstractStorage
 
     }
 
-    public function formExists($name)
+    public function entityExists($name)
     {
         $stmt = $this->db->prepare('SELECT * from `form` WHERE name=?');
         $stmt->execute(array($name));
         $res = $stmt->fetchAll();
+
         return $res;
-
-
     }
 
 }
