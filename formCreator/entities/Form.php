@@ -3,6 +3,7 @@
 namespace formCreator\entities;
 
 use formCreator\entities\FormElement;
+use formCreator\app\Storage\EntitySerializer;
 
 class Form extends Entity
 {
@@ -16,47 +17,18 @@ class Form extends Entity
 
     protected $elements = array();
 
-    public function __construct()
-    {
-    }
-
-    public function setName($name)
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
     public function setElements(array $elements)
     {
-        foreach ($elements as $element) {
-            $this->elements[] = new FormElement();
-        }
-        return $this;
-    }
+        $elementClass = 'formCreator\entities\FormElement';
+        $this->elements = EntitySerializer::createEntities($elements, $elementClass);
 
-    public function getElements()
-    {
-        return $this->elements;
+        return $this;
     }
 
     public function getAll()
     {
         $data = $this->storage->getAll();
-        $forms = array();
-        foreach ($data as $row) {
-            $form = new self();
-            $form->setName($row['name'])
-                ->setAction($row['action'])
-                ->setMethod($row['method'])
-                ->setType($row['type'])
-                ->setElements($row['elements']);
-            $forms[] = $form;
-        }
+        $forms = EntitySerializer::createEntities($data, static::class);
 
         return $forms;
     }
@@ -69,46 +41,14 @@ class Form extends Entity
 
     public function save()
     {
-        $this->storage->save($this);
+        $formData = EntitySerializer::serialize($this);
+        $this->storage->save($formData);
     }
 
-    public function setMethod($method)
+    public function getAllProperties()
     {
-        $this->method = $method;
 
-        return $this;
     }
 
-    public function setType($type)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-   /* public function setAction($action)
-    {
-        $this->action = $action;
-
-        return $this;
-    }*/
-
-    public function __call($name, $value)
-    {
-        $method = substr($name, 0, 3);
-        if ($method == 'set') {
-            $prop = strtolower(substr($name, 3));
-            if (property_exists($this, $prop)) {
-                $this->{$prop} = $value;
-            }
-        } else if ($method == 'get') {
-            $prop = strtolower(substr($name, 3));
-            if (property_exists($this, $prop)) {
-                return $this->{$prop};
-            }
-        }
-
-        return $this;
-    }
 }
 

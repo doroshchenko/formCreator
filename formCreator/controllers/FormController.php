@@ -21,9 +21,21 @@ class FormController extends Controller
 
     public function saveAction($params)
     {
-        $formName = $params['form'];
+        /*$formName = $params['form'];
         $formMethod = $params['form_method'];
         $formElements = $params['form']['elements'];
+        */
+        // -- test data -- //
+        $formName = '111';
+        $formMethod = '222';
+        $formElements = array(
+            array(
+                'name' => '111',
+                'type' => '222',
+                'value' => 333
+            )
+        );
+
         try {
             $form = new Form();
             $form->setStorage($this->getStorage())
