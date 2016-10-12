@@ -8,17 +8,18 @@
 
 namespace formCreator\app\Storage;
 
+use formCreator\entities\Entity;
+
 
 class EntitySerializer
 {
     public static function serialize($object)
     {
         $data = array();
-        $reflection = new \ReflectionClass($object);
-        $props = $reflection->getProperties();
-        foreach ($props as $prop)
-        {
-            if ($prop->name != 'storage') {
+        if ($object instanceof Entity) {
+            $reflection = new \ReflectionClass($object);
+            $props = $reflection->getProperties();
+            foreach ($props as $prop) {
                 $data[$prop->name] = $object->{'get'.ucfirst($prop->name)}();
                 if (gettype($data[$prop->name]) == 'object') {
                     self::serialize($data[$prop->name]);
@@ -30,9 +31,13 @@ class EntitySerializer
                     }
                 }
             }
+            return $data;
+        } else {
+
+            return null;
         }
 
-        return $data;
+
     }
 
     /**
