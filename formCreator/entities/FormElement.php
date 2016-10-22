@@ -9,8 +9,8 @@ class FormElement extends Entity
     protected $name;
     protected $type;
     protected $template;
-
-    public static $definition = array(
+    protected $values;
+    public static $type_definition = array(
         'text' => array('name'),
         'textarea' => array('name'),
         'dropdown' => array('name', 'values'),

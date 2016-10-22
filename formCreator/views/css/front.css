@@ -1,0 +1,11 @@
+.form{
+    width: 40%;
+    border: 1px solid;
+    float: left;
+    margin: 20px 40px;
+}
+
+.new-form {
+    width: 30%;
+    border: 1px solid black;
+}
