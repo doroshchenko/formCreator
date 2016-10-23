@@ -18,7 +18,10 @@ class EntitySerializer
         $data = array();
         if ($object instanceof Entity) {
             $reflection = new \ReflectionClass($object);
-            $props = $reflection->getProperties();
+            $allProps = $reflection->getProperties();
+            $staticProps = $reflection->getProperties(\ReflectionProperty::IS_STATIC);
+            // - avoid static props
+            $props = array_diff($allProps, $staticProps);
             foreach ($props as $prop) {
                 $data[$prop->name] = $object->{'get'.ucfirst($prop->name)}();
                 if (gettype($data[$prop->name]) == 'object') {
@@ -49,7 +52,7 @@ class EntitySerializer
     public static function createEntities($data, $class)
     {
         if (!$data) {
-            return false;
+            return $data;
         }
         $entities = array();
         foreach ($data as $row)

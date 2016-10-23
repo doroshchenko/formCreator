@@ -25,5 +25,11 @@ class Controller
         return $this->storage;
     }
 
+    public function redirect($action)
+    {
+        header('Location: ../form/index');
+
+        return true;
+    }
 
 }

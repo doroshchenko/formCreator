@@ -5,7 +5,7 @@
     margin: 20px 40px;
 }
 
-.new-form {
+.new-form, .new-element {
     width: 30%;
     border: 1px solid black;
 }

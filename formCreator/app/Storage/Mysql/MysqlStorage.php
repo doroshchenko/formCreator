@@ -39,7 +39,7 @@ class MysqlStorage extends AbstractStorage
             $stmt = $this->db->prepare('INSERT INTO `form` VALUES (null,?,?,?,?)');
             $res = $stmt->execute(array($data['name'],
                                         $data['action'],
-                                        $data['type'],
+                                        $data['enctype'],
                                         $data['method']));
             if ($res) {
                 $formId = $this->db->lastInsertId();

@@ -35,6 +35,11 @@ class View
         return $buffer;
     }
 
+    /**
+     * adding to buffer all css files in $dir recursively
+     * @param string $dir
+     * @return mixed
+     */
     public static function addCss($dir = self::CSS_PATH)
     {
         $dir_files = array_diff(scandir($dir), array('.', '..'));

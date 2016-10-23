@@ -8,14 +8,18 @@ use formCreator\app\Storage\EntitySerializer;
 class Form extends Entity
 {
     protected $name;
-
     protected $action;
-
-    protected $type;
-
+    protected $enctype;
     protected $method;
-
     protected $elements = array();
+
+    public static $method_definition = array('post' => array('enctype' => true),
+                                             'get' => array('enctype' => false));
+
+    public static $enctype_definition = array('application/x-www-form-urlencoded',
+                                              'multipart/form-data',
+                                              'text/plain');
+
 
     public function setElements(array $elements)
     {

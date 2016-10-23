@@ -56,4 +56,32 @@ class FormController extends Controller
             return $e->getMessage();
         }
     }
+
+    public function addAction($params)
+    {
+        if (!isset($params['form'])) {
+            throw new \Exception('invalid params for adding form');
+        }
+        $form = new Form();
+        $formData = $params['form'];
+        $formData['elements'] = isset($formData['elements'])
+            ? $formData['elements']
+            : array();
+        try {
+            $form->setStorage($this->getStorage())
+                ->setName($formData['name'])
+                ->setMethod($formData['method'])
+                ->setAction($formData['action'])
+                ->setEnctype($formData['enctype'])
+                ->setElements($formData['elements'])
+                ->save();
+
+
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+
+        return $this->redirect('form/index');
+
+    }
 }
