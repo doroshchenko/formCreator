@@ -13,6 +13,7 @@ class View
 {
     const TPL_PATH = 'formCreator/views/';
     const CSS_PATH = 'formCreator/views/css';
+    const JS_PATH = 'formCreator/views/js';
     public $template;
     public $params;
 
@@ -55,9 +56,23 @@ class View
         }
     }
 
-    public static function addJs()
+    public static function addJs($dir = self::JS_PATH)
     {
+        self::addJsLibs($dir . DIRECTORY_SEPARATOR . 'libs');
 
+        $scripts = '<script src="../' . $dir . DIRECTORY_SEPARATOR .  'formCreator.js"></script>';
+        $scripts .= '';
+
+        echo $scripts;
+
+    }
+
+    public static function addJsLibs($path)
+    {
+        $libs = '<script src="../' . $path. DIRECTORY_SEPARATOR . 'prototype.js"></script>';
+        $libs .= '';
+
+        echo $libs;
     }
 }
 

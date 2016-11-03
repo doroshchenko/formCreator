@@ -8,7 +8,6 @@
 
 namespace formCreator\entities;
 
-
 abstract class Entity
 {
     protected $storage;

@@ -13,8 +13,8 @@ class Form extends Entity
     protected $method;
     protected $elements = array();
 
-    public static $method_definition = array('post' => array('enctype' => true),
-                                             'get' => array('enctype' => false));
+    public static $method_definition = array('get' => array('enctype' => false),
+                                             'post' => array('enctype' => true));
 
     public static $enctype_definition = array('application/x-www-form-urlencoded',
                                               'multipart/form-data',
