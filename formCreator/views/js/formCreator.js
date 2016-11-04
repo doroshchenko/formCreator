@@ -5,48 +5,57 @@
 var formCreator = Class.create({
     initialize: function() {
         this.config = {
-            form : {
-                block         : '.form',
-                enctype       : '.form-enctype',
-                method        : '.form-method',
-                addElement    : '.add-element',
-                element : {
-                    remove      : '.remove-new-element',
-                    changeType  : '.change-element-type',
-                    addValue    : '.add-new-value',
-                    newElementValue : {
-                        remove : '.remove-new-value'
-                    }
+
+            form: {
+                blocks: {
+                  main         : '.form',
+                  element      : '.form-element',
+                  elementValue : '.form-element-value'
                 },
+                fields: {
+                    method      : '.form-method',
+                    enctype     : '.form-enctype',
+                    elementType : '.form-element-type'
+
+                },
+                eventBlocks: {
+                    saveAll            : '#save-all',
+                    addForm            : '.form-add',
+                    saveForm           : '.form-save',
+                    deleteForm         : '.form-delete',
+                    addElement         : '.form-element-add',
+                    deleteElement      : '.form-element-delete',
+                    addElementValue    : '.form-element-value-add',
+                    deleteElementValue : '.form-element-value-delete',
+                }
             }
+
         };
 
     },
     init: function () {
         var that = this;
-        this.initEnctype(this.config.form.enctype);
-        this.initElements(this.config.form.element);
-        /*Event.observe($$(this.config.newForm.changeMethod)[0], 'change', function() {
-            if (this.value == 'post') {
-                $$(that.config.newForm.enctype)[0].writeAttribute('disabled', null);
 
-            } else {
-                $$(that.config.newForm.enctype)[0].writeAttribute('disabled', 'disabled');
-            }
-        });*/
-    },
-    initChange : function () {
+        // init form actions
+        this.initFormEnctype(this.config.form.fields.enctype);
+        this.initElementAdd();
+        // init form-element actions
+        this.initElementValues();
+        this.initElementDelete();
+        // init form-element-value actions
+        this.initElementValueAdd();
+        this.initElementValueDelete();
 
     },
-
-    initClick: function () {
-
-    },
-    initEnctype: function(selector) {
+    initFormEnctype: function(selector) {
         var that = this;
         $$(selector).each(function (item) {
-            var formMethod = $(item).up(that.config.form.block).down(that.config.form.method);
-            formMethod.observe('change', function (event) {
+            var formBlock = $(item).up(that.config.form.blocks.main),
+                formMethodField = formBlock.down(that.config.form.fields.method);
+                if ($(formMethodField).value == 'get') {
+                    item.writeAttribute('disabled', 'disabled');
+                }
+            formMethodField.observe('change', function (event) {
                 (formMethod.value == 'get')
                     ? item.writeAttribute('disabled', 'disabled')
                     : item.writeAttribute('disabled', null);
