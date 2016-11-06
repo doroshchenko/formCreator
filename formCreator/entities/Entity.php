@@ -8,6 +8,8 @@
 
 namespace formCreator\entities;
 
+use formCreator\app\Helper\Helper;
+
 abstract class Entity
 {
     protected $storage;
@@ -32,7 +34,7 @@ abstract class Entity
                 return $this;
             }
         } else if ($method == 'get') {
-            $prop = strtolower(substr($name, 3));
+            $prop = Helper::methodToProperty(substr($name, 3));
             if (property_exists($this, $prop)) {
                 return $this->{$prop};
             }

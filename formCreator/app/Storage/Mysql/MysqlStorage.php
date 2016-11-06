@@ -22,6 +22,10 @@ class MysqlStorage extends AbstractStorage
         foreach ($forms as &$form) {
             $form['elements'] = $this->db->query('SELECT * FROM `form_element` WHERE id_form ='.$form['id_form'])
                 ->fetchAll(\PDO::FETCH_ASSOC);
+            foreach( $form['elements'] as &$element) {
+                $element['values'] = $this->db->query('SELECT * FROM `form_element_value`
+                    WHERE id_form_element ='.$element['id_form_element'])->fetchAll(\PDO::FETCH_ASSOC);
+            }
         }
 
         return ($forms) ? $forms : array();

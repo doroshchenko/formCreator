@@ -26,9 +26,13 @@ try {
             `id_form_element` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `id_form` int(10) unsigned NOT NULL,
             `name` varchar(100) COLLATE utf8_bin NOT NULL,
+            `label` varchar(100) COLLATE utf8_bin NOT NULL,
             `type` varchar(50) COLLATE utf8_bin NOT NULL,
-            `value` text COLLATE utf8_bin default NULL,
-            PRIMARY KEY (`id_form_element`)
+            PRIMARY KEY (`id_form_element`),
+            INDEX `id_form` (`id_form`),
+            FOREIGN KEY (`id_form`)
+            REFERENCES `form` (`id_form`)
+            ON UPDATE CASCADE ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1',
         'CREATE TABLE IF NOT EXISTS `form_element_value` (
             `id_form_element` int(10) unsigned NOT NULL,

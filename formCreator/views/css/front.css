@@ -3,7 +3,9 @@
 .form { width: 40%; border: 1px solid; float: left; margin: 20px 40px; }
 
 .new-form { width: 30%; border: 1px solid black; }
-.new-element { border: 1px solid sienna; }
+.form-element { border: 1px solid sienna; padding: 5px;}
 .save-form { position: relative; left: 54%; }
 #add_new_value { display: block; }
 .save-all-button { clear:both; color:darkred; display: block; position: relative; LEFT: 87%; }
+
+.hidden { display: none; }

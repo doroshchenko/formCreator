@@ -7,6 +7,7 @@ use formCreator\app\Storage\EntitySerializer;
 
 class Form extends Entity
 {
+    protected $id_form;
     protected $name;
     protected $action;
     protected $enctype;

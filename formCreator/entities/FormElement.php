@@ -9,6 +9,7 @@ class FormElement extends Entity
     protected $name;
     protected $type;
     protected $template;
+    protected $label;
     protected $values;
 
     public static $type_definition = array(
@@ -17,8 +18,9 @@ class FormElement extends Entity
         'dropdown' => array('name', 'values'),
         'multiselect' => array('name', 'values'),
         'radio' => array('name' => 'values'),
-        'switch' => array('name', 'values'),
-        'file' => array('name')
+        'checkbox' => array('name', 'values'),
+        'file' => array('name'),
+        'hidden' => array('name')
     );
 
     public function setStorage($storage)

@@ -14,6 +14,7 @@ class View
     const TPL_PATH = 'formCreator/views/';
     const CSS_PATH = 'formCreator/views/css';
     const JS_PATH = 'formCreator/views/js';
+
     public $template;
     public $params;
 
