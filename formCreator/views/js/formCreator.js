@@ -45,9 +45,7 @@ var formCreator = Class.create({
                               '<input name="form[#{f}][element][#{i}][value][]" value=""/>' +
                               '<button class="form-element-value-delete">delete</button>' +
                               '</div>'
-
             }
-
         };
 
     },
@@ -58,16 +56,13 @@ var formCreator = Class.create({
         this.initEnctype(this.config.form.fields.enctype);
         this.initElementAdd(this.config.form.buttons.addElement);
 
-
         // init form-element actions
         this.initElementDelete(this.config.form.buttons.deleteElement);
         this.initElementValues(this.config.form.fields.elementType);
 
-
-
         // init form-element-value actions
         this.initElementValueAdd(this.config.form.buttons.addElementValue);
-        //this.initElementValueDelete();
+        this.initElementValueDelete(this.config.form.buttons.deleteElementValue);
 
     },
     initEnctype: function(enctype) {
@@ -101,9 +96,9 @@ var formCreator = Class.create({
             });
         });
     },
-    initElementDelete: function(deleteButton) {
+    initElementDelete: function(deleteElement) {
         var that = this;
-            $(document).on('click', deleteButton, function(event) {
+            $(document).on('click', deleteElement, function(event) {
                 event.stop();
                 var elementBlock = $(event.target).up(that.config.form.blocks.element);
                 elementBlock.remove();
@@ -130,14 +125,24 @@ var formCreator = Class.create({
             event.stop();
             var addButton = $(event.target);
             var formBlock = $(addButton).up(that.config.form.blocks.main);
+
             var formId = formBlock ? formBlock.id : 0;
             var elementBlock = addButton.up(that.config.form.blocks.element);
-            var elementId = '';
+            var elementId = elementBlock.id.split('_')[1];
+
             var valueTemplate = new Template(that.config.templates.elementValue);
             var data = {f : formId, i: elementId };
             var res = valueTemplate.evaluate(data);
+
             addButton.insert({ after: res});
 
+        });
+    },
+    initElementValueDelete: function (deleteValue) {
+        var that = this;
+        $(document).on('click', deleteValue, function(event) {
+            event.stop();
+            $(event.target).closest(that.config.form.blocks.elementValue).remove();
         });
     }
 });

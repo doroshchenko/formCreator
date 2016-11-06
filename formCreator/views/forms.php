@@ -50,7 +50,7 @@
                     <? $elementNum = 0;?>
                     <? foreach ($elements as $element) {?>
                         <? $elementNum++; ?>
-                        <div class="form-element">
+                        <div class="form-element" id="element_<? echo $element->getIdFormElement();?>">
                             <p>
                                 <h4><? echo $element->getLabel();?></h4>
                                 <label> element label:</label><input type="text"  name="form[<?echo $formId;?>][element][<?echo $elementNum;?>][label]" value ='<? echo $element->getLabel(); ?>'/>

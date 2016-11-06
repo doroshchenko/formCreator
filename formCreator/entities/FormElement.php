@@ -6,6 +6,7 @@ use formCreator\entities\Entity;
 
 class FormElement extends Entity
 {
+    protected $id_form_element;
     protected $name;
     protected $type;
     protected $template;
