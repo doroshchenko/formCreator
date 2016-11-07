@@ -3,10 +3,12 @@
 namespace formCreator\entities;
 
 use formCreator\entities\Entity;
+use formCreator\app\Storage\EntitySerializer;
 
 class FormElement extends Entity
 {
     protected $id_form_element;
+    protected $id_form;
     protected $name;
     protected $type;
     protected $template;
@@ -30,9 +32,12 @@ class FormElement extends Entity
         return $this;
     }
 
-    public function getTemplate($type)
+    public function setValues(array $values)
     {
-        return 4;
+        $elementClass = 'formCreator\entities\FormElementValue';
+        $this->values = EntitySerializer::createEntities($values, $elementClass);
+
+        return $this;
     }
 }
 

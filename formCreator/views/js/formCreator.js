@@ -30,11 +30,12 @@ var formCreator = Class.create({
             },
             templates: {
 
-                element   : '<div class="form-element">' +
+                element   : '<div class="form-element" id="element_#{f}_#{i}">' +
                             '<h4>new element</h4>' +
                             '<button class="form-element-delete">delete element</button>' +
-                            '<p>name <input name="form[#{f}][element][#{i}][name]" type="text"></p>' +
-                            '<p><select class="form-element-type" name="form[#{f}][element][#{i}][type]">' +
+                            '<label> element label:</label><input type="text"  name="form[#{f}][elements][#{i}][label]"/>' +
+                            '<p>name <input name="form[#{f}][elements][#{i}][name]" type="text"></p>' +
+                            '<p><select class="form-element-type" name="form[#{f}][elements][#{i}][type]">' +
                             '<option>text</option><option>textarea</option><option has-values>dropdown</option><option has-values>multiselect</option>' +
                             '<option>file</option><option has-values>checkbox</option><option has-values>radio</option><option>hidden</option>' +
                             '</select><button class="form-element-value-add hidden">add value</button></p>' +
@@ -42,7 +43,7 @@ var formCreator = Class.create({
 
                 elementValue: '<div class="form-element-value">' +
                               '<label>value</label>' +
-                              '<input name="form[#{f}][element][#{i}][value][]" value=""/>' +
+                              '<input name="form[#{f}][elements][#{i}][values][]" value=""/>' +
                               '<button class="form-element-value-delete">delete</button>' +
                               '</div>'
             }
@@ -88,7 +89,7 @@ var formCreator = Class.create({
                 event.stop();
                 var template = new Template(that.config.templates.element);
                 var elementNum = formBlock.getElementsBySelector(that.config.form.blocks.element).length;
-                var formId = formBlock.id ? formBlock.id : 0;
+                var formId = formBlock.id.split('_')[1];
                 var data = {f: formId, i: elementNum };
                 var t = template.evaluate(data);
                 formBlock.down(that.config.form.buttons.addElement)
@@ -126,9 +127,9 @@ var formCreator = Class.create({
             var addButton = $(event.target);
             var formBlock = $(addButton).up(that.config.form.blocks.main);
 
-            var formId = formBlock ? formBlock.id : 0;
+            var formId = formBlock.id.split('_')[1];
             var elementBlock = addButton.up(that.config.form.blocks.element);
-            var elementId = elementBlock.id.split('_')[1];
+            var elementId = elementBlock.id.split('_')[2];
 
             var valueTemplate = new Template(that.config.templates.elementValue);
             var data = {f : formId, i: elementId };

@@ -51,8 +51,8 @@ class MysqlStorage extends AbstractStorage
                     $stmt = $this->db->prepare('INSERT INTO `form_element` VALUES(null,?,?,?,?)');
                     $res = $stmt->execute(array($formId,
                                                 $element['name'],
-                                                $element['type'],
-                                                $element['value']));
+                                                $element['label'],
+                                                $element['type']));
 
                 }
                 $this->db->commit();

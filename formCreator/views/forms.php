@@ -1,18 +1,18 @@
 <div class="main-block">
     <div>
-        <form method="post" class ='form' name ='new-form' action="../form/add">
+        <form method="post" class ='form' id="form_new" name ='new-form' action="../form/add">
             <h2>New Form</h2>
-            <p><label> form name:</label><input class="form-name" type="text"  name="form[name]" /></p>
-            <p><label> form action:</label><input class="form-action" type="text"  name='form[action]' /></p>
+            <p><label> form name:</label><input class="form-name" type="text"  name="form[new][name]" /></p>
+            <p><label> form action:</label><input class="form-action" type="text"  name='form[new][action]' /></p>
             <p><label> form method:</label>
-                <select class="form-method change-form-method" name ="form[method]">
+                <select class="form-method change-form-method" name ="form[new][method]">
                     <? foreach (formCreator\entities\Form::$method_definition as $method => $definition) {?>
                         <option> <? echo $method;?></option>
                     <?}?>
                 </select>
             </p>
             <p><label> form enctype:</label>
-                <select class="form-enctype" name ='form[enctype]'>
+                <select class="form-enctype" name ='form[new][enctype]'>
                     <? foreach (formCreator\entities\Form::$enctype_definition as $type) {?>
                         <option><? echo $type;?></option>
                     <?}?>
@@ -25,7 +25,7 @@
     <?php if(count($forms)) { ?>
     <div class="forms-block">
         <?php foreach ($forms as $form) { ?>
-            <form method="post" class="form" id="<? echo $form->getIdForm();?>">
+            <form method="post" class="form" id="form_<? echo $form->getIdForm();?>">
                 <? $formId = $form->getIdForm();?>
                 <h2><? echo $form->getName(); ?></h2>
                 <p><label> form name:</label><input type="text"  name="form[<?echo $formId;?>][name]" value ='<? echo $form->getName(); ?>' /></p>
@@ -50,13 +50,13 @@
                     <? $elementNum = 0;?>
                     <? foreach ($elements as $element) {?>
                         <? $elementNum++; ?>
-                        <div class="form-element" id="element_<? echo $element->getIdFormElement();?>">
+                        <div class="form-element" id="element_<? echo $element->getIdForm();?>_<? echo $element->getIdFormElement();?>">
                             <p>
                                 <h4><? echo $element->getLabel();?></h4>
-                                <label> element label:</label><input type="text"  name="form[<?echo $formId;?>][element][<?echo $elementNum;?>][label]" value ='<? echo $element->getLabel(); ?>'/>
-                                <label> element name:</label><input type="text"  name="form[<?echo $formId;?>][element][<?echo $elementNum;?>][name]" value ='<? echo $element->getName(); ?>'/>
+                                <label> element label:</label><input type="text"  name="form[<?echo $formId;?>][elements][<?echo $elementNum;?>][label]" value ='<? echo $element->getLabel(); ?>'/>
+                                <label> element name:</label><input type="text"  name="form[<?echo $formId;?>][elements][<?echo $elementNum;?>][name]" value ='<? echo $element->getName(); ?>'/>
                                 <label> element type:</label>
-                                <select class="form-element-type" name="form[<?echo $formId;?>][element][<?echo $elementNum;?>][type]">
+                                <select class="form-element-type" name="form[<?echo $formId;?>][elements][<?echo $elementNum;?>][type]">
                                     <? foreach ($element::$type_definition as $type => $definition) {?>
                                         <? $hasValues = null; ?>
                                         <? if(in_array('values', $definition)) {
@@ -74,7 +74,7 @@
                                 <? foreach ($element->getValues() as $value) {?>
                                     <div class="form-element-value">
                                         <label>value</label>
-                                        <input name="form[<? echo $formId;?>][element][<? echo $elementNum;?>][value][]" value="<? echo $value['value'];?>"/>
+                                        <input name="form[<? echo $formId;?>][elements][<? echo $elementNum;?>][values][]" value="<? echo $value->getValue();?>"/>
                                         <button class="form-element-value-delete">delete</button>
                                     </div>
                                 <?}?>

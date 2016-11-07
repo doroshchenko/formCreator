@@ -62,21 +62,21 @@ class FormController extends Controller
         if (!isset($params['form'])) {
             throw new \Exception('invalid params for adding form');
         }
-        $form = new Form();
-        $formData = $params['form'];
-        $formData['elements'] = isset($formData['elements'])
-            ? $formData['elements']
-            : array();
+        $formData = $params['form']['new'];
+        $formName = isset($formData['name']) ? $formData['name'] :  null;
+        $formAction = isset($formData['action']) ? $formData['action'] : null;
+        $formMethod = isset($formData['method']) ? $formData['method'] : null;
+        $formEnctype = isset($formData['enctype']) ? $formData['enctype'] : null;
+        $formElements = isset($formData['elements']) ? $formData['elements'] : array();
         try {
+            $form = new Form();
             $form->setStorage($this->getStorage())
-                ->setName($formData['name'])
-                ->setMethod($formData['method'])
-                ->setAction($formData['action'])
-                ->setEnctype($formData['enctype'])
-                ->setElements($formData['elements'])
-                ->save();
-
-
+                ->setName($formName)
+                ->setMethod($formMethod)
+                ->setEnctype($formEnctype)
+                ->setAction($formAction)
+                ->setElements($formElements);
+            $form->save();
         } catch (\Exception $e) {
             return $e->getMessage();
         }
