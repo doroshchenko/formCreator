@@ -40,25 +40,31 @@ class MysqlStorage extends AbstractStorage
     {
         if (!$this->entityExists($data['name'])) {
             $this->db->beginTransaction();
+            $inserted = array();
             $stmt = $this->db->prepare('INSERT INTO `form` VALUES (null,?,?,?,?)');
-            $res = $stmt->execute(array($data['name'],
+            $inserted[] = $stmt->execute(array($data['name'],
                                         $data['action'],
                                         $data['enctype'],
                                         $data['method']));
-            if ($res) {
-                $formId = $this->db->lastInsertId();
-                foreach ($data['elements'] as $element) {
-                    $stmt = $this->db->prepare('INSERT INTO `form_element` VALUES(null,?,?,?,?)');
-                    $res = $stmt->execute(array($formId,
-                                                $element['name'],
-                                                $element['label'],
-                                                $element['type']));
+            $formId = $this->db->lastInsertId();
+            foreach ($data['elements'] as $element) {
+                $stmt = $this->db->prepare('INSERT INTO `form_element` VALUES(null,?,?,?,?)');
+                $inserted[] = $stmt->execute(array($formId,
+                                            $element['name'],
+                                            $element['label'],
+                                            $element['type']));
 
+                foreach ($element['values'] as $value) {
+                    $elementId = $this->db->lastInsertId();
+                    $stmt = $this->db->prepare('INSERT INTO `form_element_value` VALUES(?,?)');
+                    $inserted[] = $stmt->execute(array($elementId,
+                                                       $value['value']));
                 }
+
+            }
+            if (!in_array(false, $inserted)) {
                 $this->db->commit();
             }
-        } else {
-            //$this->db->query();
         }
     }
 

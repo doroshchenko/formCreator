@@ -18,7 +18,7 @@ try {
             `id_form` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `name` varchar(100) COLLATE utf8_bin NOT NULL,
             `action` varchar(30) COLLATE utf8_bin DEFAULT NULL,
-            `enctype` varchar(30) COLLATE utf8_bin default NULL,
+            `enctype` varchar(60) COLLATE utf8_bin default NULL,
             `method` varchar(30) COLLATE utf8_bin NOT NULL,
              PRIMARY KEY (`id_form`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1',
