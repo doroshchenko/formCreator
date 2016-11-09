@@ -32,12 +32,12 @@ class FormElement extends Entity
         return $this;
     }
 
-    public function setValues(array $values)
+    /*public function setValues(array $values)
     {
         $elementClass = 'formCreator\entities\FormElementValue';
         $this->values = EntitySerializer::createEntities($values, $elementClass);
 
         return $this;
-    }
+    }*/
 }
 

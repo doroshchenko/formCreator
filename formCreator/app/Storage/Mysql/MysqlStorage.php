@@ -53,12 +53,11 @@ class MysqlStorage extends AbstractStorage
                                             $element['name'],
                                             $element['label'],
                                             $element['type']));
-
+                $elementId = $this->db->lastInsertId();
                 foreach ($element['values'] as $value) {
-                    $elementId = $this->db->lastInsertId();
                     $stmt = $this->db->prepare('INSERT INTO `form_element_value` VALUES(?,?)');
                     $inserted[] = $stmt->execute(array($elementId,
-                                                       $value['value']));
+                                                       $value));
                 }
 
             }

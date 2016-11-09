@@ -74,7 +74,7 @@
                                 <? foreach ($element->getValues() as $value) {?>
                                     <div class="form-element-value">
                                         <label>value</label>
-                                        <input name="form[<? echo $formId;?>][elements][<? echo $elementNum;?>][values][]" value="<? echo $value->getValue();?>"/>
+                                        <input name="form[<? echo $formId;?>][elements][<? echo $value['id_form_element'];?>][values][]" value="<? echo $value['value'];?>"/>
                                         <button class="form-element-value-delete">delete</button>
                                     </div>
                                 <?}?>
