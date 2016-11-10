@@ -38,7 +38,7 @@ class MysqlStorage extends AbstractStorage
 
     public function save($data)
     {
-        if (!$this->entityExists($data['name'])) {
+        if (!$this->entityExists($data['id_form'])) {
             $this->db->beginTransaction();
             $inserted = array();
             $stmt = $this->db->prepare('INSERT INTO `form` VALUES (null,?,?,?,?)');
@@ -69,13 +69,14 @@ class MysqlStorage extends AbstractStorage
 
     public function delete($entity)
     {
-
+        $stmt = $this->db->prepare('DELETE FROM `form` WHERE id_form=?');
+        $res = $stmt->execute(array($entity['id_form']));
     }
 
-    public function entityExists($name)
+    public function entityExists($id)
     {
-        $stmt = $this->db->prepare('SELECT * from `form` WHERE name=?');
-        $stmt->execute(array($name));
+        $stmt = $this->db->prepare('SELECT * from `form` WHERE id_form=?');
+        $stmt->execute(array($id));
         $res = $stmt->fetchAll();
 
         return $res;

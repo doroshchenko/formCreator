@@ -37,6 +37,7 @@
                         <?}?>
                     </select>
                 </p>
+                <input type="hidden" name="form[<? echo $formId;?>][id_form]" value="<? echo $formId;?>"/>
                 <p><label> form enctype:</label>
                     <select class="form-enctype" name ="form[<?echo $formId;?>][enctype]">
                         <? foreach ($form::$enctype_definition as $enctype) {?>
@@ -86,7 +87,8 @@
                     <?}?>
                 </div>
                 <button class="form-element-add">add element</button>
-                <button class="form-save">save form</button>
+                <button name="save" class="form-save" onclick='this.form.action="../form/save";' >save form</button>
+                <button name="delete" value="1" class="form-delete" onclick='this.form.action="../form/delete";' >delete form</button>
             </form>
         <?php } ?>
             <input class='save-all-button' type="submit" value="SAVE">

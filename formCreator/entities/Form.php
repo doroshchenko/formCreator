@@ -22,6 +22,13 @@ class Form extends Entity
                                               'text/plain');
 
 
+    public function __construct($id = null)
+    {
+        if ($id) {
+            $this->id_form = $id;
+        }
+    }
+
     public function setElements(array $elements)
     {
         $elementClass = 'formCreator\entities\FormElement';
@@ -53,6 +60,12 @@ class Form extends Entity
     public function getAllProperties()
     {
 
+    }
+
+    public function delete()
+    {
+        $formData = EntitySerializer::serialize($this);
+        $this->storage->delete($formData);
     }
 
 }
