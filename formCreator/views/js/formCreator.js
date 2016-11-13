@@ -35,6 +35,7 @@ var formCreator = Class.create({
                             '<button class="form-element-delete">delete element</button>' +
                             '<label> element label:</label><input type="text"  name="form[#{f}][elements][#{i}][label]"/>' +
                             '<p>name <input name="form[#{f}][elements][#{i}][name]" type="text"></p>' +
+                            '<input type="hidden" name="form[#{f}][elements][#{i}][id_form]" value="#{f}"/>' +
                             '<p><select class="form-element-type" name="form[#{f}][elements][#{i}][type]">' +
                             '<option>text</option><option>textarea</option><option has-values>dropdown</option><option has-values>multiselect</option>' +
                             '<option>file</option><option has-values>checkbox</option><option has-values>radio</option><option>hidden</option>' +
@@ -90,7 +91,7 @@ var formCreator = Class.create({
                 var template = new Template(that.config.templates.element);
                 var elementNum = formBlock.getElementsBySelector(that.config.form.blocks.element).length;
                 var formId = formBlock.id.split('_')[1];
-                var data = {f: formId, i: elementNum };
+                var data = {f: formId, i: ++elementNum };
                 var t = template.evaluate(data);
                 formBlock.down(that.config.form.buttons.addElement)
                     .insert({ before: t});

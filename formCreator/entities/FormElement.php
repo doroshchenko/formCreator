@@ -13,7 +13,7 @@ class FormElement extends Entity
     protected $type;
     protected $template;
     protected $label;
-    protected $values;
+    protected $values = array();
 
     public static $type_definition = array(
         'text' => array('name'),
@@ -39,5 +39,6 @@ class FormElement extends Entity
 
         return $this;
     }*/
+
 }
 

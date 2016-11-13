@@ -81,12 +81,9 @@ class FormController extends Controller
         if (isset($params['delete']) && isset($params['form'])) {
             foreach ($params['form'] as $form) {
                 try {
-                    $id = $form['id_form'];
-
-                    $form = new Form($id);
+                    $form = new Form($form['id_form']);
                     $form->setStorage($this->getStorage());
                     $form->delete();
-
                 } catch(\Exception $e) {
                     return $e->getMessage();
                 }

@@ -11,7 +11,8 @@ class Router
     protected $action;
     protected $params = array();
     protected $controllerNamespace = 'formCreator\controllers\\';
-
+    protected $defaultController = 'index';
+    protected $defaultAction = 'index';
 
     public function __construct(Request $request)
     {
@@ -41,11 +42,13 @@ class Router
     }
     public function getController()
     {
+        $this->controller = ($this->controller) ? $this->controller : $this->defaultController;
         return $this->controllerNamespace . ucfirst($this->controller).'Controller';
     }
 
     public function getAction()
     {
+        $this->action = ($this->action) ? $this->action : $this->defaultAction;
         return $this->action.'Action';
     }
 

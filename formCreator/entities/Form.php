@@ -45,6 +45,11 @@ class Form extends Entity
         return $forms;
     }
 
+    public function getFormByName($name)
+    {
+        return $this->storage->getFormByName($name);
+    }
+
     public function setStorage($storage)
     {
         $this->storage = $storage;

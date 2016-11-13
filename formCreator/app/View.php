@@ -21,7 +21,7 @@ class View
     public static function create($template, array $params)
     {
         $templateName = self::TPL_PATH . $template . '.php';
-        if (!file_exists($templateName)) {
+        if (!file_exists($_SERVER['DOCUMENT_ROOT']. DIRECTORY_SEPARATOR . $templateName)) {
             throw new \Exception('view ' . $templateName . ' doesn\'t exist');
         }
         ob_start();
@@ -31,7 +31,7 @@ class View
         foreach ($params as $name => $value) {
             ${$name} = $value;
         }
-        include_once $templateName;
+        include_once $_SERVER['DOCUMENT_ROOT']. DIRECTORY_SEPARATOR . $templateName;
         $buffer = ob_get_clean();
 
         return $buffer;
@@ -44,13 +44,13 @@ class View
      */
     public static function addCss($dir = self::CSS_PATH)
     {
-        $dir_files = array_diff(scandir($dir), array('.', '..'));
+        $dir_files = array_diff(scandir($_SERVER['DOCUMENT_ROOT']. DIRECTORY_SEPARATOR . $dir), array('.', '..'));
         foreach ($dir_files as $file) {
-            if (is_dir($dir . DIRECTORY_SEPARATOR . $file)) {
+            if (is_dir($_SERVER['DOCUMENT_ROOT']. DIRECTORY_SEPARATOR . $dir . DIRECTORY_SEPARATOR . $file)) {
                 return self::addCss($dir . DIRECTORY_SEPARATOR . $file);
             } else {
                 if (pathinfo($file, PATHINFO_EXTENSION) == 'css') {
-                    echo '<link type="text/css" rel="stylesheet" href="../' . $dir . DIRECTORY_SEPARATOR . $file . '">';
+                    echo '<link type="text/css" rel="stylesheet" href="../'.  $dir . DIRECTORY_SEPARATOR . $file . '">';
                 }
             }
 
@@ -59,9 +59,9 @@ class View
 
     public static function addJs($dir = self::JS_PATH)
     {
-        self::addJsLibs($dir . DIRECTORY_SEPARATOR . 'libs');
+        self::addJsLibs( $dir . DIRECTORY_SEPARATOR . 'libs');
 
-        $scripts = '<script src="../' . $dir . DIRECTORY_SEPARATOR .  'formCreator.js"></script>';
+        $scripts = '<script src="../'.  $dir . DIRECTORY_SEPARATOR .  'formCreator.js"></script>';
         $scripts .= '';
 
         echo $scripts;
@@ -70,7 +70,7 @@ class View
 
     public static function addJsLibs($path)
     {
-        $libs = '<script src="../' . $path. DIRECTORY_SEPARATOR . 'prototype.js"></script>';
+        $libs = '<script src="../'. $path. DIRECTORY_SEPARATOR . 'prototype.js"></script>';
         $libs .= '';
 
         echo $libs;
