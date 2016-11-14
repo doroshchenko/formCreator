@@ -1,7 +1,6 @@
 <?php
 
-//define('_STORAGE_', 'Mysql');
-return array(
+/*return array(
     'storage' => 'mysql',
     'storage_settings' =>
         array(
@@ -10,4 +9,11 @@ return array(
             'user' => 'root',
             'password' => 'root'
         )
+);*/
+
+return array(
+    'storage' => 'XML',
+    'storage_settings' => array(
+        'file' => 'forms.xml'
+    )
 );

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<forms>
+    <form>
+        <id_form>0</id_form>
+        <id_form/>
+        <name>dddd</name>
+        <action>ddd</action>
+        <enctype/>
+        <method>get</method>
+        <elements>
+            <element>
+                <id_form_element/>
+                <id_form>new</id_form>
+                <name>d</name>
+                <type>dropdown</type>
+                <template/>
+                <label>d</label>
+                <values>
+
+                </values>
+                <storage/>
+            </element>
+        </elements>
+    </form>
+</forms>
