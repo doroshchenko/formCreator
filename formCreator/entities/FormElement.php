@@ -11,7 +11,6 @@ class FormElement extends Entity
     protected $id_form;
     protected $name;
     protected $type;
-    protected $template;
     protected $label;
     protected $values = array();
 
@@ -31,14 +30,5 @@ class FormElement extends Entity
         $this->storage = $storage;
         return $this;
     }
-
-    /*public function setValues(array $values)
-    {
-        $elementClass = 'formCreator\entities\FormElementValue';
-        $this->values = EntitySerializer::createEntities($values, $elementClass);
-
-        return $this;
-    }*/
-
 }
 

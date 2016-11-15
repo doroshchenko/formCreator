@@ -25,7 +25,7 @@ class XMLStorage extends AbstractStorage
         if (!isset($settings['file'])) {
             throw new \Exception ('you must specify xml storage file in configuration');
         }
-        $xml_file_path = dirname(__FILE__, 4);
+        $xml_file_path = dirname(__FILE__);
         $xml_file = $xml_file_path . DIRECTORY_SEPARATOR . $settings['file'];
         if (!file_exists($xml_file)) {
             $old = umask(0);
@@ -47,32 +47,80 @@ class XMLStorage extends AbstractStorage
     public function save($data)
     {
         $this->saveForm($data);
+        $this->formatXMLFile();
     }
 
     public function delete($entity)
     {
-
+        $form = $this->xml->xpath('/forms/form[id_form='.$entity['id_form'].']')[0];
+        unset($form->{0});
+        $this->xml->asXML($this->xml_file);
+        if (!$this->xml->xpath('/forms/form')[0]) {
+            unset($this->xml->xpath('/forms')[0]->{0});
+            $this->xml->addChild('forms');
+            $this->xml->asXML($this->xml_file);
+        }
+        $this->formatXMLFile();
     }
 
     public function getAll()
     {
+       $data = json_decode(json_encode((array) $this->xml), true);
+        if (isset($data['form'])) {
+            if (!isset($data['form'][0])){
+                $arr = $data['form'];
+                unset($data);
+                $data['form'][0] = $arr;
+                unset($arr);
+            }
+            foreach ($data['form'] as &$form) {
+                if (isset($form['elements']['element']) && !isset($form['elements']['element'][0])) {
+                    $arr = $form['elements']['element'];
+                    unset($form['elements']['element']);
+                    $form['elements']['element'][0] = $arr;
+                    unset($arr);
+                }
+                if (isset($form['elements']['element'])) {
+                    foreach ($form['elements']['element'] as $element) {
+                        $form['elements'][] = $element;
+                        if (isset($element['values'])) {
+                            foreach ($element['values'] as $value) {
+                                $element['values'][] = $value;
+                            }
+                            unset($element['values']['value']);
+                        }
+                    }
+                    unset($form['elements']['element']);
+                }
+                $data[] = $form;
+            }
+            unset($data['form']);
+        }
 
+        return $data;
     }
 
     public function saveForm($data)
     {
         if (!$this->formExists($data['id_form'])) {
-            unset($data['storage']);
             $formId = $this->xml->form->count();
             $form = $this->xml->addChild('form');
             $form->addChild('id_form', $formId);
-            foreach ($data as $prop => $value) {
-                if ($prop == 'elements') {
-                        $this->saveFormElements($value, $form);
-                } else {
-                    $form->addChild($prop, $value);
-                }
-            }
+            $form->addChild('name', $data['name']);
+            $form->addChild('action', $data['action']);
+            $form->addChild('enctype', $data['enctype']);
+            $form->addChild('method', $data['method']);
+            $this->saveFormElements($data['elements'], $form);
+            $this->xml->asXML($this->xml_file);
+        } else {
+            $form = $this->xml->xpath('/forms/form[id_form='.$data['id_form'].']')[0];
+            unset($form->elements);
+            $form->id_form = $data['id_form'];
+            $form->name = $data['name'];
+            $form->action = $data['action'];
+            $form->enctype = $data['enctype'];
+            $form->method = $data['method'];
+            $this->saveFormElements($data['elements'], $form);
             $this->xml->asXML($this->xml_file);
         }
     }
@@ -81,6 +129,7 @@ class XMLStorage extends AbstractStorage
     {
         $elementsNode = $formNode->addChild('elements');
         foreach ($elementsData as $elementData) {
+            $elementData['id_form'] = $formNode->id_form[0];
             $elementNode = $elementsNode->addChild('element');
             foreach ($elementData as $elementPropName => $elementPropValue) {
                 if ($elementPropName != 'values') {
@@ -89,7 +138,7 @@ class XMLStorage extends AbstractStorage
                     $elementValuesNode = $elementNode->addChild('values');
                     $values = &$elementPropValue;
                     foreach ($values as $name => $value) {
-                        $elementValuesNode->addChild($name, $value);
+                        $elementValuesNode->addChild('v_'.$name, $value);
                     }
                 }
             }
@@ -104,5 +153,15 @@ class XMLStorage extends AbstractStorage
             }
         }
         return false;
+    }
+
+    protected function formatXMLFile()
+    {
+        $dom = new DOMDocument("1.0");
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        $dom->loadXML($this->xml->asXML());
+        $dom->saveXML();
+        $dom->save($this->xml_file);
     }
 }

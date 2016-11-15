@@ -24,7 +24,7 @@ class Form extends Entity
 
     public function __construct($id = null)
     {
-        if ($id) {
+        if ($id != null) {
             $this->id_form = $id;
         }
     }
