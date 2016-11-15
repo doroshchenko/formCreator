@@ -39,7 +39,7 @@ class Form extends Entity
 
     public function getAll()
     {
-        $data = $this->storage->getAll();
+        $data = $this->storage->getData('*');
         $forms = EntitySerializer::createEntities($data, static::class);
 
         return $forms;
@@ -47,7 +47,7 @@ class Form extends Entity
 
     public function getFormByName($name)
     {
-        return $this->storage->getFormByName($name);
+        return $this->storage->getData('name', $name);
     }
 
     public function setStorage($storage)

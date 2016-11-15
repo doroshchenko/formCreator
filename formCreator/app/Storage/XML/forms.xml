@@ -2,10 +2,23 @@
 <forms>
   <form>
     <id_form>0</id_form>
-    <name>56</name>
-    <action>65</action>
-    <enctype/>
-    <method>get</method>
-    <elements/>
+    <name>66666</name>
+    <action>66666</action>
+    <enctype>application/x-www-form-urlencoded</enctype>
+    <method>post</method>
+    <elements>
+      <element>
+        <id_form_element/>
+        <id_form>0</id_form>
+        <name>666</name>
+        <type>checkbox</type>
+        <label>666</label>
+        <values>
+          <v_0>677</v_0>
+          <v_1>676767</v_1>
+        </values>
+        <storage/>
+      </element>
+    </elements>
   </form>
 </forms>
