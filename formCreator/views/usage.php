@@ -18,7 +18,7 @@
                    <label><? echo $element['label'];?></label>
                    <select  name="<? echo $element['name']; ?>">
                        <? foreach ($element['values'] as $value) {?>
-                           <option><? echo $value['value']; ?></option>
+                           <option><? echo $value; ?></option>
                        <? }?>
                    </select>
                </p>
@@ -28,7 +28,7 @@
                    <label><? echo $element['label'];?></label>
                    <select  name="<? echo $element['name']; ?>" multiple>
                        <? foreach ($element['values'] as $value) {?>
-                           <option ><? echo $value['value']; ?></option>
+                           <option ><? echo $value; ?></option>
                        <? }?>
                    </select>
                </p>
@@ -37,7 +37,7 @@
                <p>
                    <label><? echo $element['label'];?></label>
                        <? foreach ($element['values'] as $value) {?>
-                           <input type="radio"  value="<?echo $value['value'];?>" name="<? echo $element['name'];?>"/> <?echo $value['value'];?>
+                           <input type="radio"  value="<?echo $value;?>" name="<? echo $element['name'];?>"/> <?echo $value;?>
                        <? }?>
                </p>
                <? break;?>
@@ -51,7 +51,7 @@
                <p>
                    <label><? echo $element['label'];?></label>
                    <? foreach ($element['values'] as $value) {?>
-                       <input type="checkbox"  value="<?echo $value['value'];?>" name="<? echo $element['name'];?>"/> <?echo $value['value'];?>
+                       <input type="checkbox"  value="<?echo $value;?>" name="<? echo $element['name'];?>"/> <?echo $value;?>
                    <? }?>
                </p>
                <? break;?>

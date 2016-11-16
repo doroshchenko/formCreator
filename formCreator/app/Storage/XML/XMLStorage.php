@@ -52,14 +52,16 @@ class XMLStorage extends AbstractStorage
 
     public function delete($entity)
     {
-        $form = $this->xml->xpath('/forms/form[id_form='.$entity['id_form'].']')[0];
-        unset($form->{0});
-        $this->xml->asXML($this->xml_file);
-        if (!$this->xml->xpath('/forms/form')[0]) {
-            unset($this->xml->xpath('/forms')[0]->{0});
+        $forms = $this->xml->xpath('/forms/form');
+        if (count($forms) == 1) {
+            unset($this->xml->form[0]);
             $this->xml->addChild('forms');
-            $this->xml->asXML($this->xml_file);
+        } else {
+            $form = $this->xml->xpath('/forms/form[id_form='.$entity['id_form'].']')[0];
+            unset($form[0]);
         }
+
+        $this->xml->asXML($this->xml_file);
         $this->formatXMLFile();
     }
 
@@ -68,10 +70,10 @@ class XMLStorage extends AbstractStorage
         switch ($mode) {
             case '*' :
                 $data = json_decode(json_encode((array) $this->xml), true);
-                return $this->getAll();
+                return $this->getAll($data);
             case 'name' :
                 $form = $this->xml->xpath('/forms/form[name='.$name.']')[0];
-                $data = json_decode(json_encode((array) $form), true);
+                $data['form'] = json_decode(json_encode((array) $form), true);
                 return $this->getAll($data);
         }
     }
