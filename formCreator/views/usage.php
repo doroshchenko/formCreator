@@ -1,3 +1,4 @@
+<?php if(isset($form) && count($form)) {?>
 <h3><? echo $form['name'];?></h3>
 <form name="<? echo $form['name']?>" action="<? echo $form['action'];?>" method="<? echo $form['method'];?>" <? if (isset($form['enctype'])){ echo 'enctype="' . $form['enctype'] . '"';}?>>
    <? if (isset($form['elements'])) {?>
@@ -65,3 +66,6 @@
        <input type="submit" value="submit"/>
    <? }?>
 </form>
+<?php } else {
+    echo 'form doesn\'t exist';
+ }?>

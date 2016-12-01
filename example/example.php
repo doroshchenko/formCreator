@@ -17,7 +17,7 @@ spl_autoload_register(function ($class) {
 
     <div>
         <h1> Please submit tour data</h1>
-        <?php formCreator\Application::printForm('66666'); ?>
+        <?php formCreator\Application::printForm('form'); ?>
 
         <pre> data
                 data .......

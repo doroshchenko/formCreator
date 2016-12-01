@@ -71,16 +71,21 @@ class XMLStorage extends AbstractStorage
             case '*' :
                 $data = json_decode(json_encode((array) $this->xml), true);
                 return $this->getAll($data);
+                break;
             case 'name' :
-                $form = $this->xml->xpath('/forms/form[name='.$name.']')[0];
-                $data['form'] = json_decode(json_encode((array) $form), true);
-                return $this->getAll($data);
+                $form = $this->xml->xpath('/forms/form[name="'.$name.'"]');
+                if ($form) {
+                    $data['form'] = json_decode(json_encode((array) $form[0]), true);
+                    return $this->getAll($data);
+                } else {
+                    return null;
+                }
         }
     }
 
     public function getAll($data)
     {
-        if (isset($data['form'])) {
+        if (isset($data['form']) && count($data['form'])) {
             if (!isset($data['form'][0])){
                 $arr = $data['form'];
                 unset($data);

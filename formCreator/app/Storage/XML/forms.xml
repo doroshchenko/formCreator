@@ -2,11 +2,21 @@
 <forms>
   <form>
     <id_form>0</id_form>
-    <name>x</name>
+    <name>form</name>
     <action>x</action>
-    <enctype/>
+    <enctype>d</enctype>
     <method>get</method>
-    <elements/>
+    <elements>
+      <element>
+        <id_form_element/>
+        <id_form>0</id_form>
+        <name>tt</name>
+        <type>text</type>
+        <label>tt</label>
+        <values/>
+        <storage/>
+      </element>
+    </elements>
   </form>
   <forms/>
 </forms>
