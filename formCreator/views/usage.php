@@ -1,6 +1,6 @@
 <?php if(isset($form) && count($form)) {?>
 <h3><? echo $form['name'];?></h3>
-<form name="<? echo $form['name']?>" action="<? echo $form['action'];?>" method="<? echo $form['method'];?>" <? if (isset($form['enctype'])){ echo 'enctype="' . $form['enctype'] . '"';}?>>
+<form name="<? echo $form['name']?>" action="<? echo $form['action'];?>" method="<? echo $form['method'];?>" <? if (!empty($form['enctype'])){ echo 'enctype="' . $form['enctype'] . '"';}?>>
    <? if (isset($form['elements'])) {?>
    <? foreach ($form['elements'] as $element) {?>
            <? switch ($element['type']) {
@@ -19,7 +19,7 @@
                    <label><? echo $element['label'];?></label>
                    <select  name="<? echo $element['name']; ?>">
                        <? foreach ($element['values'] as $value) {?>
-                           <option><? echo $value; ?></option>
+                           <option><? echo $value['value']; ?></option>
                        <? }?>
                    </select>
                </p>
@@ -29,7 +29,7 @@
                    <label><? echo $element['label'];?></label>
                    <select  name="<? echo $element['name']; ?>" multiple>
                        <? foreach ($element['values'] as $value) {?>
-                           <option ><? echo $value; ?></option>
+                           <option ><? echo $value['value']; ?></option>
                        <? }?>
                    </select>
                </p>
@@ -38,7 +38,7 @@
                <p>
                    <label><? echo $element['label'];?></label>
                        <? foreach ($element['values'] as $value) {?>
-                           <input type="radio"  value="<?echo $value;?>" name="<? echo $element['name'];?>"/> <?echo $value;?>
+                           <input type="radio"  value="<?echo $value['value'];?>" name="<? echo $element['name'];?>"/> <?echo $value['value'];?>
                        <? }?>
                </p>
                <? break;?>
@@ -52,7 +52,7 @@
                <p>
                    <label><? echo $element['label'];?></label>
                    <? foreach ($element['values'] as $value) {?>
-                       <input type="checkbox"  value="<?echo $value;?>" name="<? echo $element['name'];?>"/> <?echo $value;?>
+                       <input type="checkbox"  value="<?echo $value['value'];?>" name="<? echo $element['name'];?>"/> <?echo $value['value'];?>
                    <? }?>
                </p>
                <? break;?>

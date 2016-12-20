@@ -21,7 +21,7 @@ class MysqlStorage extends AbstractStorage
         $this->db = PDOConnection::getConnection($db_settings);
     }
 
-    public function getAll()
+    public function getAllForms()
     {
         $res = $this->db->query("SELECT * FROM `form`");
         $forms = $res->fetchAll(\PDO::FETCH_ASSOC);
@@ -36,8 +36,6 @@ class MysqlStorage extends AbstractStorage
 
         return ($forms) ? $forms : array();
     }
-
-
 
     public function save($data)
     {
@@ -125,6 +123,19 @@ class MysqlStorage extends AbstractStorage
         }
         return ($forms) ? $forms : array();
 
+    }
+
+    public function getData($mode, $name = null)
+    {
+        switch ($mode) {
+            case '*' :
+                return $this->getAllForms();
+                break;
+            case 'name' :
+                return $this->getFormByName($name);
+                break;
+
+        }
     }
 }
 

@@ -55,7 +55,7 @@ class XMLStorage extends AbstractStorage
         $forms = $this->xml->xpath('/forms/form');
         if (count($forms) == 1) {
             unset($this->xml->form[0]);
-            $this->xml->addChild('forms');
+           // $this->xml->addChild('forms');
         } else {
             $form = $this->xml->xpath('/forms/form[id_form='.$entity['id_form'].']')[0];
             unset($form[0]);
@@ -70,20 +70,26 @@ class XMLStorage extends AbstractStorage
         switch ($mode) {
             case '*' :
                 $data = json_decode(json_encode((array) $this->xml), true);
-                return $this->getAll($data);
+                return $this->formatData($data);
                 break;
             case 'name' :
                 $form = $this->xml->xpath('/forms/form[name="'.$name.'"]');
                 if ($form) {
                     $data['form'] = json_decode(json_encode((array) $form[0]), true);
-                    return $this->getAll($data);
+                    return $this->formatData($data);
                 } else {
                     return null;
                 }
         }
     }
 
-    public function getAll($data)
+    /**
+     * rebuilds data array
+     * make it similar to mysql data
+     * @param $data
+     * @return array
+     */
+    public function formatData($data)
     {
         if (isset($data['form']) && count($data['form'])) {
             if (!isset($data['form'][0])){
@@ -101,12 +107,13 @@ class XMLStorage extends AbstractStorage
                 }
                 if (isset($form['elements']['element'])) {
                     foreach ($form['elements']['element'] as $element) {
-                        $form['elements'][] = $element;
+                        $i = isset($i) ? ++$i : 0;
+                        $form['elements'][$i] = $element;
                         if (isset($element['values'])) {
-                            foreach ($element['values'] as $value) {
-                                $element['values'][] = $value;
+                            foreach ($element['values'] as $key => $value) {
+                                $form['elements'][$i]['values'][]['value'] = $value;
+                                unset($form['elements'][$i]['values'][$key]);
                             }
-                            unset($element['values']['value']);
                         }
                     }
                     unset($form['elements']['element']);
@@ -181,6 +188,6 @@ class XMLStorage extends AbstractStorage
         $dom->formatOutput = true;
         $dom->loadXML($this->xml->asXML());
         $dom->saveXML();
-        $dom->save($this->xml_file);
+        ///$dom->save($this->xml_file);
     }
 }
